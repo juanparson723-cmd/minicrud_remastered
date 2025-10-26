@@ -1,32 +1,26 @@
-import os
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from db import db  # importamos db desde un archivo separado (db.py)
+import os
 
-# Inicialización de la aplicación Flask
 app = Flask(__name__)
 
-# Configuración de la base de datos
-uri = os.getenv("DATABASE_URL", "sqlite:///local.db")
+# 🔑 Clave secreta requerida para formularios CSRF (puede ser cualquier string aleatorio)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'mi_clave_secreta_segura')
 
-# Render a veces usa "postgres://" (obsoleto), lo convertimos a "postgresql://"
+uri = os.getenv("DATABASE_URL", "sqlite:///local.db")
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Inicializamos SQLAlchemy y Flask-Migrate
-db.init_app(app)
+db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-# 👇 Importamos después de inicializar db
-from routes import *
+# Importar rutas y modelos (coloca aquí tus imports para evitar bucles)
 from models import *
-
-# Crear tablas automáticamente si no existen
-with app.app_context():
-    db.create_all()
+from routes import *
 
 if __name__ == '__main__':
     app.run(debug=True)
