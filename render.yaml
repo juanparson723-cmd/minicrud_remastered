@@ -1,0 +1,19 @@
+# render.yaml
+# Configuración para desplegar Flask + PostgreSQL en Render
+
+services:
+  - type: web
+    name: minicrud_remastered # nombre del servicio
+    env: python # entorno de ejecución
+    buildCommand: "pip install -r requirements.txt" # instala dependencias
+    startCommand: "gunicorn app:app" # comando para arrancar Flask (usa tu archivo principal)
+    autoDeploy: true # despliegues automáticos cuando subas a GitHub
+    envVars:
+      - key: DATABASE_URL # variable de entorno que Flask usará para conectar la BD
+        fromDatabase:
+          name: minicrud_db # 👈 nombre de la base de datos (debe coincidir abajo)
+          property: connectionString
+
+databases:
+  - name: minicrud_db # 👈 Render creará automáticamente esta base de datos PostgreSQL
+    plan: free # usa el plan gratuito

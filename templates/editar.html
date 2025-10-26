@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Alumno{% endblock %}
+
+{% block content %}
+    <h1>Editar Alumno</h1>
+    <form method="post">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            {{ form.matricula.label }}
+            {{ form.matricula(class="form-control", value=alumno.matricula) }}
+        </div>
+        <div class="form-group">
+            {{ form.nombre.label }}
+            {{ form.nombre(class="form-control", value=alumno.nombre) }}
+        </div>
+        <div class="form-group">
+
+
+            
+            {{ form.grupo.label }}
+            {{ form.grupo(class="form-control", value=alumno.grupo) }}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Panel de Alumnos{% endblock %}
+
+{% block content %}
+<div class="panel-container">
+
+    <div class="panel-header">
+      <img src="{{ url_for('static', filename='cecytos.jpg') }}" alt="Logo CECYTEM" class="logo">
+      <h1>📚 Registro de Alumnos</h1>
+    </div>
+    
+    <a href="{{ url_for('crear') }}">
+        <button style="margin-bottom: 20px;">➕ Agregar Nuevo Alumno</button>
+    </a>
+
+    <table id="tablaAlumnos">
+      <thead>
+        <tr>
+          <th>Matrícula</th>
+          <th>Nombre</th>
+          <th>Grupo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for alumno in alumnos %}
+        <tr>
+          <td>{{ alumno.matricula }}</td>
+          <td>{{ alumno.nombre }}</td>
+          <td>{{ alumno.grupo }}</td>
+          <td>
+            <a href="{{ url_for('editar', id=alumno.id) }}"><button>✏️ Editar</button></a>
+            <a href="{{ url_for('borrar', id=alumno.id) }}" onclick="return confirm('¿Estás seguro de que quieres borrar a {{ alumno.nombre }}?')"><button class="logout">🗑️ Borrar</button></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <button class="logout" onclick="logout()">Cerrar Sesión</button>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

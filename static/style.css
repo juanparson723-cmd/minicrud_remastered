@@ -1,0 +1,181 @@
+/* ================== ESTILOS GLOBALES ================== */
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
+  background-size: 400% 400%;
+  animation: fondo 10s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px 0;
+}
+
+@keyframes fondo {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+/* ================== MENÚ PRINCIPAL ================== */
+.menu-container {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  animation: fadeIn 1s ease;
+}
+
+.menu-container button {
+  margin: 10px;
+  background-color: #a26eff;
+  color: white;
+  font-size: 16px;
+}
+
+.menu-container button:hover {
+  background-color: #8a56e2;
+  transform: scale(1.1);
+}
+
+/* ================== FORMULARIOS LOGIN Y REGISTRO ================== */
+.form-container, .formulario {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 25px;
+  padding: 30px 40px;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  animation: fadeIn 1s ease;
+}
+
+h2 {
+  color: #ff6f91;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  color: #555;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 2px solid #ffb6c1;
+  border-radius: 10px;
+  outline: none;
+  transition: 0.3s;
+  background: #fff;
+}
+
+input:focus {
+  border-color: #ff6f91;
+  box-shadow: 0 0 10px #ffb6c1;
+  transform: scale(1.05);
+}
+
+/* ================== BOTONES ================== */
+button {
+  background: linear-gradient(45deg, #ff6f91, #ff9671, #ffc75f);
+  color: white;
+}
+
+button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px #ff6f91;
+}
+
+/* ================== PANEL DE ALUMNOS ================== */
+.panel-container {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  animation: fadeIn 1s ease;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+/* ================== TABLA ALUMNOS ================== */
+#tablaAlumnos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+#tablaAlumnos th {
+  background-color: #d1c4e9;
+  color: #4a148c;
+  padding: 10px;
+}
+
+#tablaAlumnos td {
+  padding: 10px;
+}
+
+/* Colores pastel para filas */
+#tablaAlumnos tr {
+  transition: all 0.4s ease;
+}
+
+/* ================== ANIMACION MOSTRAR/OCULTAR ================== */
+.hidden {
+  display: none;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.5s ease;
+}
+
+.visible {
+  display: table;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================== LOGOUT ================== */
+.logout {
+  margin-top: 20px;
+  background-color: #ff7675;
+}
+
+/* ================== ANIMACIONES ================== */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
