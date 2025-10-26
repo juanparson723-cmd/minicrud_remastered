@@ -28,11 +28,5 @@ from models import *
 with app.app_context():
     db.create_all()
 
-
-@app.route('/')
-def home():
-    return "Conexión a PostgreSQL en Render funcionando 🚀"
-
-
 if __name__ == '__main__':
     app.run(debug=True)
