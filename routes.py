@@ -1,39 +1,32 @@
 from flask import render_template, request, redirect, url_for, flash
-# QUITAMOS: from app import app, db  <-- ¡Esto causaba el error!
-from models import Alumno
-# ⚠️ IMPORTANTE: Si tu archivo se llama forms.py, usa 'from forms import AlumnoForm'
 from forms import AlumnoForm 
+# ¡NO hay ninguna importación de app, db, o models!
 
+# La función recibe app, db, y la clase Alumno
+def register_routes(app, db, Alumno):
+    """Registra todas las rutas de la aplicación."""
 
-def register_routes(app, db):
-    """Función para registrar todas las rutas de la aplicación."""
-
-    # === RUTAS DE AUTENTICACIÓN Y MENÚ ===
+    # === 1. RUTA PRINCIPAL (LOGIN) ===
     @app.route('/')
-    def home(): # Endpoint: 'home'
-        return redirect(url_for('login')) 
+    @app.route('/login') # Ambas URLs llevan al login
+    def login(): 
+        return render_template('login.html') 
 
-    @app.route('/login')
-    def login(): # Endpoint: 'login'
-        return render_template('login.html')
-
+    # === 2. RUTAS DE AUTENTICACIÓN ===
     @app.route('/register')
-    def register(): # Endpoint: 'register'
+    def register(): 
         return render_template('register.html')
 
-
-    # === RUTA DEL PANEL DE ALUMNOS (CRUD Listado) ===
-    @app.route('/alumnos')
-    def index(): # Endpoint: 'index'
-        # Ahora el contexto de la app está activo, por lo que la consulta funciona
+    # === 3. RUTA DEL PANEL DE ALUMNOS (CRUD Listado) ===
+    @app.route('/alumnos') 
+    def index(): 
+        # Alumno.query.all() ahora se ejecuta con el contexto correcto
         alumnos = Alumno.query.all()
-        return render_template('index.html', alumnos=alumnos)
+        return render_template('index.html', alumnos=alumnos) 
 
-
-    # === RUTAS CRUD ===
-
+    # === RUTA CRUD: CREAR ===
     @app.route('/crear', methods=['GET', 'POST'])
-    def crear(): # Endpoint: 'crear'
+    def crear(): 
         form = AlumnoForm()
         if form.validate_on_submit():
             nuevo_alumno = Alumno(
@@ -47,8 +40,9 @@ def register_routes(app, db):
             return redirect(url_for('index')) 
         return render_template('crear.html', form=form)
 
+    # === RUTA CRUD: EDITAR ===
     @app.route('/editar/<int:id>', methods=['GET', 'POST'])
-    def editar(id): # Endpoint: 'editar'
+    def editar(id): 
         alumno = Alumno.query.get_or_404(id)
         form = AlumnoForm(obj=alumno)
         if form.validate_on_submit():
@@ -58,17 +52,14 @@ def register_routes(app, db):
             return redirect(url_for('index'))
         return render_template('editar.html', form=form, alumno=alumno)
 
+    # === RUTA CRUD: BORRAR ===
     @app.route('/borrar/<int:id>')
-    def borrar(id): # Endpoint: 'borrar'
+    def borrar(id): 
         alumno = Alumno.query.get_or_404(id)
         db.session.delete(alumno)
         db.session.commit()
         flash('Alumno eliminado con éxito!', 'danger')
         return redirect(url_for('index'))
-
-
-
-
 """from flask import render_template, request, redirect, url_for, flash
 from app import app, db
 from models import Alumno

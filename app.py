@@ -2,42 +2,45 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-# Importamos routes como un módulo (no sus variables)
-import routes 
+# ¡NO importar models ni routes aquí!
 
-# 1. Instancias de Extensiones (SIN APLICACIÓN AÚN)
-# Deben ser globales para que los modelos puedan importarlas.
+# 1. Instancias Globales de Extensiones (SIN app)
 db = SQLAlchemy()
 migrate = Migrate()
 
-# 2. FUNCIÓN FÁBRICA: Crea y configura la aplicación
 def create_app():
+    # 2. Instancia de Flask y Configuración
     app = Flask(__name__)
     
-    # Configuración de la aplicación
-    # Render usará DATABASE_URL; tu local usará sqlite:///minicrud.db
+    # Configuración: Usa DATABASE_URL de Render, o SQLite local
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'mi_clave_secreta'
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///minicrud.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    # 3. Inicializar Extensiones CON la aplicación
+    # 3. Inicializar Extensiones CON la aplicación (Vinculación)
     db.init_app(app)
     migrate.init_app(app, db)
     
     # 4. Registrar Modelos y Rutas
     with app.app_context():
-        # Importar los modelos para que SQLAlchemy los conozca
-        import models
-        # Registrar las rutas llamando a la función del módulo routes.py
-        routes.register_routes(app, db) # <-- Solución final de la importación
+        import models # Registra modelos para db.create_all() y migraciones
+        from models import Alumno # Obtenemos la clase Alumno
+        import routes 
+        
+        # 🚨 Pasamos Alumno como argumento para romper el ciclo
+        routes.register_routes(app, db, Alumno) 
+        
+        # Crear tablas (Necesario si no usas migraciones o si es la primera vez)
+        db.create_all()
 
     return app
 
-# 5. Instancia Global para Gunicorn/Render
+# 5. Instancia Global (Gunicorn/Render llama a esta variable)
 app = create_app()
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
