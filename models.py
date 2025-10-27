@@ -1,5 +1,4 @@
-from db import db
-
+from extensions import db
 
 class Alumno(db.Model):
     id = db.Column(db.Integer, primary_key=True)

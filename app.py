@@ -1,11 +1,11 @@
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from extensions import db
 from flask_migrate import Migrate
 # ¡NO importar models ni routes aquí!
 
 # 1. Instancias Globales de Extensiones (SIN app)
-db = SQLAlchemy()
 migrate = Migrate()
 
 def create_app():
@@ -29,7 +29,7 @@ def create_app():
         
         # 🚨 Pasamos Alumno como argumento para romper el ciclo
         routes.register_routes(app, db, Alumno) 
-        
+    
         # Crear tablas (Necesario si no usas migraciones o si es la primera vez)
         db.create_all()
 
